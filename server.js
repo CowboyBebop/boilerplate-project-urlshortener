@@ -51,6 +51,7 @@ app.get("/api/hello", function (req, res) {
 app.post("/api/shorturl/new", function (req, res) {
   
   let newUrl = req.body
+
   console.log(newUrl);
 
   //check if it's a valid url
@@ -83,6 +84,8 @@ app.get("/api/shorturl/:short_url", function (req, res) {
     
   let searchShortenedUrl = req.params.short_url;
 
+
+  console.log(searchShortenedUrl);
   //check for the short url
   ShortUrlModel.findOne({hashedUrl: searchShortenedUrl}, (err,data) => {
     if(err) return console.log(err);
