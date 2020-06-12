@@ -83,11 +83,10 @@ app.post("/api/shorturl/new", function (req, res) {
   })
 
   //return the object
-  let shortUrlStr = "https://www.fcc-microservices.herokuapp.com/api/shorturl/" + hash;
+  let shortUrlStr = "https://fcc-microservices.herokuapp.com/api/shorturl/" + hash;
   return res.write('<a href="'+ shortUrlStr+ '">' + shortUrlStr + '</a>'); 
 
 });
-
 app.get("/api/shorturl/:short_url", function (req, res) {
     
   let searchShortenedUrl = req.params.short_url;
