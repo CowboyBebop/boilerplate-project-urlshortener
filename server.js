@@ -83,7 +83,7 @@ app.post("/api/shorturl/new", function (req, res) {
   })
 
   //return the object
-  return res.send(new URL("https:www." + __dirname + "/api/shorturl/" + hash )); 
+  return res.send("https:www." + __dirname + "/api/shorturl/" + hash); 
 
 });
 
