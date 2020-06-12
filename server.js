@@ -51,7 +51,7 @@ app.get("/api/hello", function (req, res) {
 app.post("/api/shorturl/new", function (req, res) {
   
   let newUrl = req.body
-
+  console.log(newUrl);
 
   //check if it's a valid url
   if (dns.lookup(newUrl, (err) => {
