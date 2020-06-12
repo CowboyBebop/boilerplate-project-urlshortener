@@ -48,7 +48,7 @@ app.get("/api/hello", function (req, res) {
 //get the new shorturl
 app.post("/api/shorturl/new", function (req, res) {
   
-  let newUrl = req.body
+  let newUrl = req.body.url
 
   console.log(newUrl);
 
