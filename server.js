@@ -60,7 +60,7 @@ app.post("/api/shorturl/new", function (req, res) {
   }))
 
   //otherwise create hash and check if it already exists in the db
-  let hash = crypto.createHash('sha1').update(newUrl).digest('base64')
+  var hash = crypto.createHash('sha1').update(newUrl).digest('base64')
 
   ShortUrlModel.findOne({hashedUrl: hash}, (err,data) => {
     if(err) return console.log(err);
@@ -80,7 +80,7 @@ app.post("/api/shorturl/new", function (req, res) {
 });
 
 app.get("/api/shorturl/:short_url", function (req, res) {
-  
+    
   let searchShortenedUrl = req.params.short_url;
 
   //check for the short url
