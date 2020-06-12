@@ -19,12 +19,10 @@ mongoose.connect(process.env.MONGO_URI);
 
 app.use(cors());
 
-/* In case body-parser is still needed, break this glass
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-*/
 
 app.use('/public', express.static(process.cwd() + '/public'));
 
@@ -53,7 +51,6 @@ app.post("/api/shorturl/new", function (req, res) {
   let newUrl = req.body
 
   console.log(newUrl);
-  console.log("1");
 
   //check if it's a valid url
   if (dns.lookup(newUrl, (err) => {
@@ -84,10 +81,6 @@ app.post("/api/shorturl/new", function (req, res) {
 app.get("/api/shorturl/:short_url", function (req, res) {
     
   let searchShortenedUrl = req.params.short_url;
-
-
-  console.log(searchShortenedUrl);
-  console.log("2");
 
   //check for the short url
   ShortUrlModel.findOne({hashedUrl: searchShortenedUrl}, (err,data) => {
