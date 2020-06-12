@@ -58,7 +58,7 @@ app.post("/api/shorturl/new", function (req, res) {
 
   let urlResult = async () => {
     try {
-      return await dnsPromises.lookup('example.com');
+      return await dnsPromises.lookup(newUrl);
     } catch (err) {
       console.log(err)
     }
@@ -83,8 +83,7 @@ app.post("/api/shorturl/new", function (req, res) {
   })
 
   //return the object
-  return res.status(200).json({"original_url": newUrl ,"short_url": hash}) 
-  
+  return res.send(new URL("https:www." + __dirname + "/api/shorturl/" + hash )); 
 
 });
 
