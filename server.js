@@ -58,7 +58,7 @@ app.post("/api/shorturl/new", function (req, res) {
 
   let urlResult;
   try{
-    urlResult = await dnsPromises.lookup('example.com', options);
+    urlResult = await dnsPromises.lookup('example.com');
   } catch (err) {
     if(err) return console.log(err);
   }
