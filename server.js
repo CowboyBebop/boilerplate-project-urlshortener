@@ -55,29 +55,36 @@ app.post("/api/shorturl/new", function (req, res) {
   console.log("newUrl: " + newUrl);
 
   //check if it's a valid url
-  dns.lookup(newUrl, (err,address) => {
-    //if not send {"error":"invalid URL"} back
+
+  let urlResult;
+  try{
+    urlResult = await dnsPromises.lookup('example.com', options);
+  } catch (err) {
     if(err) return console.log(err);
-    else if (!address) res.json({"error":"invalid URL"});
+  }
 
-    //otherwise create hash and check if it already exists in the db
-    var hash = crypto.createHash('sha1').update(newUrl).digest('base64')
+ 
+    //if not send {"error":"invalid URL"} back
+  if (!urlResult) return res.json({"error":"invalid URL"});
 
-    ShortUrlModel.findOne({hashedUrl: hash}, (err,data) => {
-      if(err) return console.log(err);
-      
-      //if it doesn't exist, add it to the db
-      if(!data) 
-      {
-        let urlDoc = ShortUrlModel({originalUrl: newUrl, hashedUrl: hash})
-        urlDoc.save();
-      }
-      console.log("added url to db");
-    })
+  //otherwise create hash and check if it already exists in the db
+  var hash = crypto.createHash('sha1').update(newUrl).digest('base64')
 
-    //return the object
-    return res.status(200).json({"original_url": newUrl ,"short_url": hash}) 
-    })
+  ShortUrlModel.findOne({hashedUrl: hash}, (err,data) => {
+    if(err) return console.log(err);
+    
+    //if it doesn't exist, add it to the db
+    if(!data) 
+    {
+      let urlDoc = ShortUrlModel({originalUrl: newUrl, hashedUrl: hash})
+      urlDoc.save();
+    }
+    console.log("added url to db");
+  })
+
+  //return the object
+  return res.status(200).json({"original_url": newUrl ,"short_url": hash}) 
+  
 
 });
 
