@@ -74,7 +74,7 @@ app.post("/api/shorturl/new", function (req, res) {
   })
 
   //return the object
-  res.json({"original_url": newUrl ,"short_url": hash}) 
+  return res.json({"original_url": newUrl ,"short_url": hash}) 
 
 });
 
@@ -89,13 +89,12 @@ app.get("/api/shorturl/:short_url", function (req, res) {
     if(data) 
     {
       //if it exists then redirect
-      console.log(data.originalUrl)
-      res.redirect(data.originalUrl)
+      return res.redirect(data.originalUrl)
     }
     else
     {
       //if not send invalid
-      res.json({"error":"invalid URL"});
+      return res.json({"error":"invalid URL"});
     }
   })
 
