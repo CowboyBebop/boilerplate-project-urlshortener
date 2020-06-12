@@ -89,6 +89,7 @@ app.get("/api/shorturl/:short_url", function (req, res) {
     if(data) 
     {
       //if it exists then redirect
+      console.log(data.originalUrl)
       res.redirect(data.originalUrl)
     }
     else
