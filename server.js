@@ -50,7 +50,7 @@ app.post("/api/shorturl/new", function (req, res) {
   
   let newUrl = req.body.url
 
-  console.log(newUrl);
+  console.log("newUrl: " + newUrl);
 
   //check if it's a valid url
   if (dns.lookup(newUrl, (err) => {
