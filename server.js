@@ -75,6 +75,7 @@ app.post("/api/shorturl/new", function (req, res) {
 
     //otherwise don't do anything
   })
+  console.log("before responce");
 
   //return the object
   return res.json({"original_url": newUrl ,"short_url": hash}) 
