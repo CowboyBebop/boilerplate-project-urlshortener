@@ -58,7 +58,6 @@ app.post("/api/shorturl/new", function (req, res) {
     if(err) return res.json({"error":"invalid URL"});
   }))
 
-
   //otherwise create hash and check if it already exists in the db
   var hash = crypto.createHash('sha1').update(newUrl).digest('base64')
 
@@ -78,8 +77,7 @@ app.post("/api/shorturl/new", function (req, res) {
   console.log("before responce");
 
   //return the object
-  return res.json({"original_url": newUrl ,"short_url": hash}) 
-
+  return res.status(200).json({"original_url": newUrl ,"short_url": hash}) 
 });
 
 app.get("/api/shorturl/:short_url", function (req, res) {
