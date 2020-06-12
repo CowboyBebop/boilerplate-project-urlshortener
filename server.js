@@ -62,7 +62,6 @@ app.post("/api/shorturl/new", function (req, res) {
 
     ShortUrlModel.findOne({hashedUrl: hash}, (err,data) => {
       if(err) return console.log(err);
-      console.log("|");
       
       //if it doesn't exist, add it to the db
       if(!data) 
@@ -70,8 +69,7 @@ app.post("/api/shorturl/new", function (req, res) {
         let urlDoc = ShortUrlModel({originalUrl: newUrl, hashedUrl: hash})
         urlDoc.save();
       }
-
-      //otherwise don't do anything
+      console.log("added url to db");
     })
 
     //return the object
