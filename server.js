@@ -53,52 +53,54 @@ app.post("/api/shorturl/new", function (req, res) {
   console.log("newUrl: " + newUrl);
 
   //check if it's a valid url
-  if (dns.lookup(newUrl, (err) => {
+  dns.lookup(newUrl, (err) => {
     //if not send {"error":"invalid URL"} back
-    if(err) return res.json({"error":"invalid URL"});
-  }))
+    if(err) res.json({"error":"invalid URL"});
+    
+    var hash = crypto.createHash('sha1').update(newUrl).digest('base64')
+
+    ShortUrlModel.findOne({hashedUrl: hash}, (err,data) => {
+      if(err) return console.log(err);
+      console.log("|");
+      
+      //if it doesn't exist, add it to the db
+      if(!data) 
+      {
+        let urlDoc = ShortUrlModel({originalUrl: newUrl, hashedUrl: hash})
+        urlDoc.save();
+      }
+  
+      //otherwise don't do anything
+    })
+    console.log("before responce");
+  
+    //return the object
+    return res.status(200).json({"original_url": newUrl ,"short_url": hash}) 
+  });
+  
+  app.get("/api/shorturl/:short_url", function (req, res) {
+      
+    let searchShortenedUrl = req.params.short_url;
+  
+    //check for the short url
+    ShortUrlModel.findOne({hashedUrl: searchShortenedUrl}, (err,data) => {
+      if(err) return console.log(err);
+      
+      if(data) 
+      {
+        //if it exists then redirect
+        return res.redirect(data.originalUrl)
+      }
+      else
+      {
+        //if not send invalid
+        return res.json({"error":"invalid URL"});
+      }
+    })
+  })
 
   //otherwise create hash and check if it already exists in the db
-  var hash = crypto.createHash('sha1').update(newUrl).digest('base64')
 
-  ShortUrlModel.findOne({hashedUrl: hash}, (err,data) => {
-    if(err) return console.log(err);
-    console.log("|");
-    
-    //if it doesn't exist, add it to the db
-    if(!data) 
-    {
-      let urlDoc = ShortUrlModel({originalUrl: newUrl, hashedUrl: hash})
-      urlDoc.save();
-    }
-
-    //otherwise don't do anything
-  })
-  console.log("before responce");
-
-  //return the object
-  return res.status(200).json({"original_url": newUrl ,"short_url": hash}) 
-});
-
-app.get("/api/shorturl/:short_url", function (req, res) {
-    
-  let searchShortenedUrl = req.params.short_url;
-
-  //check for the short url
-  ShortUrlModel.findOne({hashedUrl: searchShortenedUrl}, (err,data) => {
-    if(err) return console.log(err);
-    
-    if(data) 
-    {
-      //if it exists then redirect
-      return res.redirect(data.originalUrl)
-    }
-    else
-    {
-      //if not send invalid
-      return res.json({"error":"invalid URL"});
-    }
-  })
 
 });
 
