@@ -64,6 +64,7 @@ app.post("/api/shorturl/new", function (req, res) {
 
   ShortUrlModel.findOne({hashedUrl: hash}, (err,data) => {
     if(err) return console.log(err);
+    console.log("|");
     
     //if it doesn't exist, add it to the db
     if(!data) 
@@ -71,14 +72,12 @@ app.post("/api/shorturl/new", function (req, res) {
       let urlDoc = ShortUrlModel({originalUrl: newUrl, hashedUrl: hash})
       urlDoc.save();
     }
-    console.log("|");
 
     //otherwise don't do anything
   })
 
   //return the object
-  res.json({"original_url": newUrl ,"short_url": hash}) 
-  return;
+  return res.json({"original_url": newUrl ,"short_url": hash}) 
 
 });
 
@@ -93,14 +92,12 @@ app.get("/api/shorturl/:short_url", function (req, res) {
     if(data) 
     {
       //if it exists then redirect
-      res.redirect(data.originalUrl)
-      return
+      return res.redirect(data.originalUrl)
     }
     else
     {
       //if not send invalid
-      res.json({"error":"invalid URL"});
-      return
+      return res.json({"error":"invalid URL"});
     }
   })
 
