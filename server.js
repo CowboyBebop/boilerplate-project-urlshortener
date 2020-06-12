@@ -45,6 +45,8 @@ app.get("/api/hello", function (req, res) {
 });
 
 
+
+
 //get the new shorturl
 app.post("/api/shorturl/new", function (req, res) {
   
@@ -53,9 +55,10 @@ app.post("/api/shorturl/new", function (req, res) {
   console.log("newUrl: " + newUrl);
 
   //check if it's a valid url
-  dns.lookup(newUrl, (err) => {
+  dns.lookup(newUrl, (err,address) => {
     //if not send {"error":"invalid URL"} back
-    if(err) return res.json({"error":"invalid URL"});
+    if(err) return console.log(err);
+    else if (!address) res.json({"error":"invalid URL"});
 
     //otherwise create hash and check if it already exists in the db
     var hash = crypto.createHash('sha1').update(newUrl).digest('base64')
