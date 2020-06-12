@@ -48,9 +48,9 @@ app.get("/api/hello", function (req, res) {
 
 
 //get the new shorturl
-app.post("/api/shorturl/new", function (req, res) {
+app.get("/api/shorturl/new/:short_url", function (req, res) {
   
-  let newUrl = req.body
+  let newUrl = req.params.short_url;
 
 
   //check if it's a valid url
