@@ -56,13 +56,13 @@ app.post("/api/shorturl/new", function (req, res) {
 
   //check if it's a valid url
 
-  let urlResult;
-  try{
-    urlResult = await dnsPromises.lookup('example.com');
-  } catch (err) {
-    if(err) return console.log(err);
-  }
-
+  let urlResult = async () => {
+    try {
+      return await dnsPromises.lookup('example.com');
+    } catch (err) {
+      console.log(err)
+    }
+  };
  
     //if not send {"error":"invalid URL"} back
   if (!urlResult) return res.json({"error":"invalid URL"});
