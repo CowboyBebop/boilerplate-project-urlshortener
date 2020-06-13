@@ -69,7 +69,6 @@ app.post("/api/shorturl/new", function (req, res) {
 
   //otherwise create hash and check if it already exists in the db
   var hash = crypto.createHash('CRC32').update(newUrl).digest('hex')
-  hash = encodeURI(hash);
 
   ShortUrlModel.findOne({hashedUrl: hash}, (err,data) => {
     if(err) return console.log(err);
